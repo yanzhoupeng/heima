@@ -1,18 +1,14 @@
 <template>
-  <div id="app"></div>
+  <div id="app">
+    <h1>黑马头条</h1>
+    <router-view />
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
-  data () {
-    return {}
-  },
-  created () {},
-  mounted () {},
-  methods: {},
-  components: {}
+  name: 'App'
 }
 </script>
 
-<style lang="less" scoped></style>
+<style scoped lang="less"></style>
