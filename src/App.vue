@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <h1>黑马头条</h1>
+    <van-button type="warning">警告按钮</van-button>
+    <van-button type="danger">危险按钮</van-button>
     <router-view />
   </div>
 </template>
@@ -11,4 +13,4 @@ export default {
 }
 </script>
 
-<style scoped lang="less"></style>
+<style lang="less"></style>
