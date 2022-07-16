@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+// 创建axios实例：便于使用不同接口
 const request = axios.create({
-  baseURL: 'http://ttapi.research.itcast.cn/' // 基础路径
+  // 基准路径
+  baseURL: 'http://toutiao.itheima.net/'
 })
 
 export default request

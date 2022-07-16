@@ -6,7 +6,7 @@ import router from './router'
 import store from './store'
 // 移动端适配方案
 import 'amfe-flexible'
-// 引入css样式
+// 引入less
 import '@/styles/index.less'
 // vant全部导入
 import Vant from 'vant'

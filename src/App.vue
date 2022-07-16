@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <h1>黑马头条</h1>
-    <van-button type="warning">警告按钮</van-button>
-    <van-button type="danger">危险按钮</van-button>
-    <router-view />
+    <!-- 路由挂载 -->
+    <div>
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  components: {}
 }
 </script>
 
