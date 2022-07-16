@@ -8,6 +8,9 @@ import store from './store'
 import 'amfe-flexible'
 // 引入less
 import '@/styles/index.less'
+// 引入字体图标
+import '@/assets/iconfont/iconfont.css'
+
 // vant全部导入
 import Vant from 'vant'
 import 'vant/lib/index.css'

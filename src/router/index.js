@@ -17,7 +17,7 @@ const routes = [
     name: 'login',
     // 路由懒加载
     component: () => import('@/views/login/index'),
-    meta: { title: '注册 / 登录' }
+    meta: { title: '登录' }
   }
 ]
 
