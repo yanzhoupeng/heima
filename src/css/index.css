@@ -1,8 +1,9 @@
+/* 全局样式 */
 body {
   background-color: #f5f7f9;
 }
 .van-nav-bar__content {
-  height: 90px ;
+  height: 90px;
   background-color: #3296fa;
 }
 .van-nav-bar__content .van-nav-bar__title {

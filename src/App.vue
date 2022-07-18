@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <!-- 路由挂载 -->
-    <div>
-      <router-view />
-    </div>
+    <router-view />
   </div>
 </template>
 
