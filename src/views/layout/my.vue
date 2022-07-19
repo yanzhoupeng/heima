@@ -61,9 +61,6 @@ export default {
   .user {
     display: flex;
   }
-
-  .hd-info {
-  }
 }
 .heimaweb {
   font-size: 50px;
