@@ -129,7 +129,9 @@ export default {
 
     async loadUserMsg() {
       try {
-        const { data } = await getUserMsg()
+        const {
+          data: { data }
+        } = await getUserMsg()
         this.userMsg = data
       } catch (error) {
         if (error.status === 400) {

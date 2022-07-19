@@ -19,7 +19,6 @@ export const postUserMsg = (data) => {
 // 获取验证码
 export const getCode = (mobile) => {
   return request({
-    headers: { 'Content-Type': 'application/json' },
     url: `v1_0/sms/codes/${mobile}`
   })
 }
