@@ -10,3 +10,7 @@ body {
   color: #fff;
   font-size: 32px;
 }
+.van-nav-bar__content .heimaweb {
+  color: #fff;
+  font-size: 20px !important;
+}

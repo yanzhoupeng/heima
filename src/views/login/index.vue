@@ -3,7 +3,11 @@
 <template>
   <div class="login-content">
     <!-- 导航栏 -->
-    <base-header :title="$route.meta.title"></base-header>
+    <van-nav-bar :title="$route.meta.title">
+      <template #left>
+        <i class="heimaweb icon-guanbi" @click="$router.back()"></i>
+      </template>
+    </van-nav-bar>
 
     <!-- 表单 -->
     <van-form ref="loginForm" @submit="onSubmit">
@@ -76,8 +80,6 @@
 <script>
 import { postUserMsg, getCode } from '@/api/login.js'
 
-import baseHeader from '@/components/header/header'
-
 export default {
   name: 'LoginIndex',
 
@@ -85,8 +87,8 @@ export default {
     return {
       // 使用对象存储表单信息
       user: {
-        mobile: '',
-        code: ''
+        mobile: '13333333333',
+        code: '246810'
       },
 
       // 校验规则
@@ -135,6 +137,8 @@ export default {
         this.$toast.success('登录成功')
         // 处理token
         this.$store.commit('setUserInfo', data)
+        // 跳转页面
+        this.$router.back()
       } catch (error) {
         // 打印错误日志
         error.response.status === 400
@@ -168,10 +172,6 @@ export default {
         }
       }
     }
-  },
-
-  components: {
-    baseHeader
   }
 }
 </script>

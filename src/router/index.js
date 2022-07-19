@@ -18,29 +18,31 @@ const routes = [
   // 主页
   {
     path: '/',
-    name: 'Tab-tar',
-    component: () => import('@/views/index.vue'),
-    // 挂载子路由
+    redirect: '/home',
+    component: () => import('@/views/layout/index.vue'),
+    // 子路由规则
     children: [
+      // 二级路由中加/会覆盖一级路由
+      // 二级路由中不加/会和一级路由做拼接
       {
-        path: '',
+        path: '/home',
         name: 'Home',
-        component: () => import('@/views/layout/home.vue')
+        component: () => import('@/views/home/home.vue')
       },
       {
         path: 'qa',
         name: 'Qa',
-        component: () => import('@/views/layout/qa.vue')
+        component: () => import('@/views/home/qa.vue')
       },
       {
         path: 'video',
         name: 'Video',
-        component: () => import('@/views/layout/video.vue')
+        component: () => import('@/views/home/video.vue')
       },
       {
         path: 'my',
         name: 'My',
-        component: () => import('@/views/layout/my.vue')
+        component: () => import('@/views/home/my.vue')
       }
     ]
   }

@@ -28,5 +28,5 @@ export const getItem = (key) => {
 
 // del
 export const deleteItem = (key) => {
-  window.localStorage.deleteItem(key)
+  window.localStorage.removeItem(key)
 }
