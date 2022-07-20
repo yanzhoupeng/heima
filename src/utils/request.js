@@ -1,5 +1,5 @@
 /**
- * 封装axios方法
+ * 封装axios 添加请求拦截器
  *  只定义了基准路径的ajax请求 request
  */
 

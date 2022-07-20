@@ -11,7 +11,6 @@ import 'amfe-flexible'
 import '@/styles/index.less'
 // 引入字体图标
 import '@/assets/iconfont/iconfont.css'
-
 // vant全部导入
 import Vant from 'vant'
 import 'vant/lib/index.css'

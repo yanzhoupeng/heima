@@ -1,5 +1,5 @@
 /**
- * 封装login界面 网络请求方法
+ * login组件 接口开发
  *  登录 postUserMsg
  *  验证码 getCode
  */

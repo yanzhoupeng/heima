@@ -1,8 +1,8 @@
 /**
  * 封装本地存储方法
- *  获取本地存储信息 get
- *  进行本地存储 set
- *  删除本地存储 delete
+ *  获取本地存储信息 getItem
+ *  进行本地存储 setItem
+ *  删除本地存储 deleteItem
  */
 
 // set

@@ -1,4 +1,4 @@
-// my 我的页面开发
+// my组件
 
 <template>
   <div>
