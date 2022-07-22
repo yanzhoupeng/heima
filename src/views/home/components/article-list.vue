@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="article-list">
     <!-- list列表 -->
     <van-pull-refresh
       v-model="refreshing"
@@ -15,7 +15,11 @@
         :error.sync="error"
         error-text="请求失败，点击重新加载"
       >
-        <van-cell v-for="item in list" :key="item.art_id" :title="item.title" />
+        <article-item
+          v-for="item in list"
+          :key="item.art_id"
+          :article="item"
+        ></article-item>
       </van-list>
     </van-pull-refresh>
   </div>
@@ -23,6 +27,8 @@
 
 <script>
 import { getChannelArt } from '@/api/home.js'
+
+import articleItem from '@/components/article-item'
 
 export default {
   name: 'ArticleList',
@@ -104,8 +110,17 @@ export default {
 
       this.refreshing = false
     }
+  },
+
+  components: {
+    articleItem
   }
 }
 </script>
 
-<style></style>
+<style lang="less" scoped>
+.article-list {
+  height: 79vh;
+  overflow-y: auto;
+}
+</style>

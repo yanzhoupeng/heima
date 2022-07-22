@@ -14,6 +14,8 @@ import '@/assets/iconfont/iconfont.css'
 // vant全部导入
 import Vant from 'vant'
 import 'vant/lib/index.css'
+// 加载day.js
+import './utils/dayjs'
 
 Vue.use(Vant)
 

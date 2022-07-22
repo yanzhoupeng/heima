@@ -38,51 +38,67 @@
       <!-- 组件插槽 -->
       <template #nav-right>
         <!-- hamburger按钮 -->
-        <div class="hamburger-btn">
+        <div class="hamburger-btn" @click="showPopup">
           <i class="heimaweb icon-gengduo"></i>
         </div>
         <!-- placeholder占位符 -->
         <div class="placeholder"></div>
       </template>
     </van-tabs>
+
+    <van-popup
+      v-model="show"
+      closeable
+      position="right"
+      :style="{ height: '100%', width: '100%' }"
+    >
+      <channel-edit :channel="channels" :active="active"></channel-edit>
+    </van-popup>
   </div>
 </template>
 
 <script>
-import { getAllChennels } from '@/api/home.js'
+import { getUserChennels } from '@/api/home.js'
 
 import ArticleList from '@/views/home/components/article-list.vue'
+import ChannelEdit from '@/components/channel-edit'
 
 export default {
   data() {
     return {
       active: 0,
-      channels: {}
+      channels: {},
+      show: false
     }
   },
 
   created() {
-    this.getAllChennels()
+    this.getUserChennels()
   },
 
   methods: {
-    async getAllChennels() {
+    async getUserChennels() {
       try {
         const {
           data: {
             data: { channels }
           }
-        } = await getAllChennels()
+        } = await getUserChennels()
 
         this.channels = channels
       } catch (error) {
         this.$toast.fail('请稍后重试')
       }
+    },
+
+    showPopup() {
+      this.show = true
     }
   },
 
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
   }
 }
 </script>
@@ -173,5 +189,9 @@ export default {
     background-color: #3296fa;
     bottom: 8px;
   }
+}
+
+/deep/ .van-popup__close-icon--top-right {
+  top: 0.32rem;
 }
 </style>

@@ -6,9 +6,9 @@
 
 import request from '@/utils/request'
 
-export const getAllChennels = () => {
+export const getUserChennels = () => {
   return request({
-    url: 'v1_0/channels'
+    url: 'v1_0/user/channels'
   })
 }
 
@@ -16,5 +16,11 @@ export const getChannelArt = (params) => {
   return request({
     url: 'v1_0/articles',
     params
+  })
+}
+
+export const getAllChennels = () => {
+  return request({
+    url: 'v1_0/channels'
   })
 }
