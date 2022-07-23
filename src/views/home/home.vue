@@ -5,7 +5,7 @@
     <!-- navbar导航栏 -->
     <van-nav-bar class="navbar-nav" fixed>
       <template #title>
-        <van-button round type="info" class="navbar-btn">
+        <van-button round type="info" class="navbar-btn" to="/search">
           <template #icon>
             <i class="heimaweb icon-sousuo"></i>
           </template>
@@ -52,13 +52,18 @@
       position="right"
       :style="{ height: '100%', width: '100%' }"
     >
-      <channel-edit :channel="channels" :active="active"></channel-edit>
+      <channel-edit
+        :channel="channels"
+        :active="active"
+        @toggleChannel="toggleChannel"
+      ></channel-edit>
     </van-popup>
   </div>
 </template>
 
 <script>
-import { getUserChennels } from '@/api/home.js'
+import { getUserChennels, removeUserChannel } from '@/api/home.js'
+import { setItem, getItem } from '@/utils/storage.js'
 
 import ArticleList from '@/views/home/components/article-list.vue'
 import ChannelEdit from '@/components/channel-edit'
@@ -77,15 +82,34 @@ export default {
   },
 
   methods: {
+    // 获取用户频道
     async getUserChennels() {
       try {
-        const {
-          data: {
-            data: { channels }
-          }
-        } = await getUserChennels()
+        if (this.$store.state.user) {
+          // 已登录
+          const {
+            data: {
+              data: { channels }
+            }
+          } = await getUserChennels()
 
-        this.channels = channels
+          this.channels = channels
+        } else {
+          // 未登录
+          const localChannels = getItem('TOUTIAO_CHANNELS')
+
+          if (localChannels) {
+            this.channels = localChannels
+          } else {
+            const {
+              data: {
+                data: { channels }
+              }
+            } = await getUserChennels()
+
+            this.channels = channels
+          }
+        }
       } catch (error) {
         this.$toast.fail('请稍后重试')
       }
@@ -93,6 +117,41 @@ export default {
 
     showPopup() {
       this.show = true
+    },
+
+    toggleChannel(value, id, status) {
+      if (status !== true) {
+        // 高亮切换
+        this.active = id
+        this.show = false
+      } else {
+        // 删除
+        // 排除推荐
+        if (id === 0) {
+          return 0
+        }
+        // 删除数组元素
+        this.channels.splice(id, 1)
+        // 判断id 小于等于active时 active前移
+        if (id <= this.active) {
+          this.active -= 1
+        }
+
+        this.removeChannel(value.id)
+      }
+    },
+
+    // 删除频道后的数据持久化
+    async removeChannel(id) {
+      try {
+        if (this.$store.state.user) {
+          await removeUserChannel(id)
+        } else {
+          setItem('TOUTIAO_CHANNELS', this.channels)
+        }
+      } catch (error) {
+        this.$toast.fail('操作失败，请稍后重试')
+      }
     }
   },
 

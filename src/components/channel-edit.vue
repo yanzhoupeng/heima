@@ -3,8 +3,14 @@
     <!-- cell 我的频道 -->
     <van-cell title="我的频道">
       <!-- 频道编辑按钮 -->
-      <van-button plain round size="mini" type="warning" class="edit-btn"
-        >编辑</van-button
+      <van-button
+        plain
+        round
+        size="mini"
+        type="warning"
+        class="edit-btn"
+        @click="isShow = !isShow"
+        >{{ isShow ? '保存' : '编辑' }}</van-button
       >
     </van-cell>
 
@@ -15,9 +21,16 @@
         v-for="(value, id) in channel"
         :key="id"
         :text="value.name"
-        icon="close"
         :class="{ red: active === id }"
-      />
+        @click="toggleChannel(value, id, isShow)"
+      >
+        <template #icon>
+          <van-icon
+            v-show="isShow && !fixChannel.includes(value.id)"
+            name="close"
+          />
+        </template>
+      </van-grid-item>
     </van-grid>
 
     <!-- 频道推荐 -->
@@ -30,21 +43,29 @@
         :key="id"
         :text="value.name"
         icon="plus"
+        @click="addChannel(value)"
       />
     </van-grid>
   </div>
 </template>
 
 <script>
-import { getAllChennels } from '@/api/home.js'
+// 引入接口
+import { getAllChennels, addUserChannels } from '@/api/home.js'
+// 引入工具
+import { setItem } from '@/utils/storage.js'
 
 export default {
   name: 'channelEdit',
+
   data() {
     return {
-      allChannels: []
+      allChannels: [],
+      isShow: false,
+      fixChannel: [0]
     }
   },
+
   props: {
     channel: {
       type: Array,
@@ -55,7 +76,10 @@ export default {
       type: Number
     }
   },
+
   computed: {
+    // 推荐频道数据获取
+
     // 使用filter遍历数组
     commendChannels() {
       return this.allChannels.filter(
@@ -75,11 +99,13 @@ export default {
     //   return channel
     // }
   },
+
   created() {
     this.getAllChennels()
   },
 
   methods: {
+    // 获得所有频道
     async getAllChennels() {
       try {
         const {
@@ -91,6 +117,33 @@ export default {
       } catch (error) {
         this.$toast.fail('获取失败')
       }
+    },
+
+    // 添加频道
+    async addChannel(value) {
+      this.channel.push(value)
+
+      // 持久化操作
+      if (this.$store.state.user) {
+        try {
+          // 已登录 安排接口
+          await addUserChannels({
+            id: value.id, // 频道 id
+            seq: this.allChannels.length // 频道的 序号
+          })
+          this.$toast('添加成功')
+        } catch (error) {
+          this.$toast.fail('保存失败')
+        }
+      } else {
+        // 未登录 本地存储
+        setItem('TOUTIAO_CHANNELS', this.channel)
+      }
+    },
+
+    // 切换/删除 频道
+    toggleChannel(value, id, status) {
+      this.$emit('toggleChannel', value, id, status)
     }
   }
 }
@@ -127,24 +180,28 @@ export default {
       .van-grid-item__text {
         color: #222;
         font-size: 28px;
-        margin-left: 6px;
         margin: 0;
       }
     }
 
     // 穿透 关闭图标样式
-    /deep/ .van-icon-close {
-      position: absolute;
-      right: -10px;
-      top: -10px;
-      font-size: 36px;
-      color: #ccc;
-      z-index: 20;
+    /deep/ .van-grid-item__icon-wrapper {
+      position: unset;
+
+      .van-icon-close {
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        font-size: 36px;
+        color: #ccc;
+        z-index: 20;
+      }
     }
 
     // 穿透 加号图标样式
     /deep/ .van-icon-plus {
       font-size: 28px;
+      margin-right: 10px;
     }
   }
 
