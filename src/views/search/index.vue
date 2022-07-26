@@ -3,7 +3,7 @@
     <form action="/">
       <van-search
         class="search-inp"
-        v-model="value"
+        v-model.trim="value"
         show-action
         background="#3296fa"
         placeholder="请输入搜索关键词"
@@ -20,7 +20,8 @@
     <search-history
       v-else
       :searchHistory="searchHistory"
-      @delHistory="delHistory"
+      @search="onSearch"
+      @delAllHistory="searchHistory = []"
     />
   </div>
 </template>
@@ -30,19 +31,36 @@ import SearchHistory from './components/search-history.vue'
 import SearchResult from './components/search-result.vue'
 import SearchSuggest from './components/search-suggest.vue'
 
+import { setItem, getItem } from '@/utils/storage.js'
+
 export default {
   name: 'SearchPage',
   data() {
     return {
       value: '',
       isShowResult: false,
-      searchHistory: []
+      searchHistory: getItem('TOUTIAO_SEARCH_HISTORY') || []
     }
+  },
+
+  watch: {
+    searchHistory(val) {
+      setItem('TOUTIAO_SEARCH_HISTORY', val)
+    }
+  },
+
+  // dom元素加载完成后
+  mounted() {
+    // 自动聚焦input
+    document.querySelector('.van-field__control').focus()
   },
 
   methods: {
     // 搜索事件
     onSearch(val) {
+      if (val === '') {
+        return this.$toast('搜索内容不能为空')
+      }
       // 显示搜索结果
       this.isShowResult = true
 
@@ -62,12 +80,6 @@ export default {
     onCancel() {
       // 返回主页
       this.$router.push('/home')
-    },
-
-    // 删除指定历史记录
-    delHistory(val) {
-      // 过滤器
-      this.searchHistory = this.searchHistory.filter((item) => item !== val)
     }
   },
 

@@ -52,6 +52,15 @@ const routes = [
     path: '/search',
     name: 'Search',
     component: () => import('@/views/search/index')
+  },
+
+  // 文章详情页
+  {
+    path: '/article/:article_id',
+    name: 'Article',
+    component: () => import('@/views/article/index'),
+    // 解耦url参数
+    props: true
   }
 ]
 

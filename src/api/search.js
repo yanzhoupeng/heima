@@ -1,5 +1,8 @@
 /**
  * search 组件
+ *
+ *  getSearchSuggest 获取搜索建议
+ *  getSearchResult 获取搜索结果
  */
 
 import request from '@/utils/request'

@@ -6,19 +6,21 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <van-cell
-        v-for="item in searchResult"
-        :key="item.art_id"
-        :title="item.title"
-      />
+      <article-item
+        v-for="(item, id) in searchResult"
+        :key="id"
+        :article="item"
+      ></article-item>
     </van-list>
   </div>
 </template>
 
 <script>
 import { getSearchResult } from '@/api/search.js'
+import articleItem from '@/components/article-item.vue'
 
 export default {
+  components: { articleItem },
   name: 'SearchResult',
   data() {
     return {
@@ -67,4 +69,9 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.search-result {
+  height: 92vh;
+  overflow-y: auto;
+}
+</style>

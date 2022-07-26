@@ -1,7 +1,8 @@
 /**
- * login组件 接口开发
+ * login 接口
+ *
  *  登录 postUserMsg
- *  验证码 getCode
+ *  获取验证码 getCode
  */
 
 // 引入axios请求函数
