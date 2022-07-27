@@ -28,3 +28,33 @@ export const cannelFollowUser = (target) =>
     method: 'DELETE',
     url: `v1_0/user/followings/${target}`
   })
+
+export const collectArticle = (target) =>
+  request({
+    method: 'POST',
+    url: 'v1_0/article/collections',
+    data: {
+      target
+    }
+  })
+
+export const cannelCollectArticle = (target) =>
+  request({
+    method: 'DELETE',
+    url: `v1_0/article/collections/${target}`
+  })
+
+export const likeArticle = (target) =>
+  request({
+    method: 'POST',
+    url: 'v1_0/article/likings',
+    data: {
+      target
+    }
+  })
+
+export const cannelLikeArticle = (target) =>
+  request({
+    method: 'DELETE',
+    url: `v1_0/article/likings/${target}`
+  })

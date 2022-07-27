@@ -34,27 +34,11 @@
           </div>
 
           <!-- 关注按钮 -->
-          <van-button
-            v-if="article.is_followed"
+          <follow-btn
             class="follow-btn"
-            round
-            size="small"
-            @click="onFollow"
-          >
-            已关注
-          </van-button>
-          <van-button
-            v-else
-            class="follow-btn"
-            type="info"
-            color="#3296fa"
-            round
-            size="small"
-            icon="plus"
-            @click="onFollow"
-          >
-            关注
-          </van-button>
+            v-model="article.is_followed"
+            :userID="article.aut_id"
+          />
         </van-cell>
         <!-- /用户信息 -->
 
@@ -65,6 +49,37 @@
           ref="article-content"
         ></div>
         <van-divider>正文结束</van-divider>
+
+        <!-- 评论列表 -->
+        <comment-list :source="article_id" />
+
+        <!-- 底部区域 -->
+        <div class="article-bottom">
+          <!-- 发布评论 -->
+          <van-button class="comment-btn" type="default" round size="small"
+            >写评论</van-button
+          >
+
+          <!-- 评论总数 -->
+          <van-icon name="comment-o" :badge="totalCount" color="#777" />
+
+          <!-- 收藏文章 -->
+          <colloction
+            v-model="article.is_collected"
+            :article_id="article_id"
+            class="collect-btn"
+          />
+
+          <!-- 点赞文章 -->
+          <like-article
+            v-model="article.attitude"
+            :article_id="article_id"
+            class="collect-btn"
+          />
+
+          <van-icon name="share" color="#777777"></van-icon>
+        </div>
+        <!-- /底部区域 -->
       </div>
       <!-- /加载完成-文章详情 -->
 
@@ -85,18 +100,6 @@
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
     </div>
-
-    <!-- 底部区域 -->
-    <div class="article-bottom">
-      <van-button class="comment-btn" type="default" round size="small"
-        >写评论</van-button
-      >
-      <van-icon name="comment-o" badge="123" color="#777" />
-      <van-icon color="#777" name="star-o" />
-      <van-icon color="#777" name="good-job-o" />
-      <van-icon name="share" color="#777777"></van-icon>
-    </div>
-    <!-- /底部区域 -->
   </div>
 </template>
 
@@ -107,6 +110,11 @@ import { ImagePreview } from 'vant'
 
 import './github-markdown.css'
 
+import FollowBtn from '@/components/follow-btn'
+import Colloction from './components/colloction.vue'
+import LikeArticle from './components/like-article.vue'
+import CommentList from './components/comment-list.vue'
+
 export default {
   name: 'ArticleIndex',
 
@@ -114,7 +122,8 @@ export default {
     return {
       article: {},
       isLoading: true, // 加载状态
-      errorStatus: -1 // 错误状态码
+      errorStatus: -1, // 错误状态码
+      totalCount: 0
     }
   },
 
@@ -214,6 +223,13 @@ export default {
   created() {
     // 在页面创建完成后 调用文章详情加载函数
     this.loadArticleById()
+  },
+
+  components: {
+    FollowBtn,
+    Colloction,
+    LikeArticle,
+    CommentList
   }
 }
 </script>
@@ -337,6 +353,10 @@ export default {
         background-color: #e22829;
       }
     }
+  }
+
+  .collect-btn {
+    font-size: px;
   }
 }
 </style>
