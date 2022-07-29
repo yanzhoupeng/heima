@@ -5,22 +5,22 @@
     <van-image
       slot="icon"
       round
-      width="30"
-      height="30"
-      style="margin-right: 10px"
+      class="avatar"
+      fit="cover"
       :src="comment.aut_photo"
     />
 
     <div slot="title" class="title-wrap">
       <!-- 用户名 -->
-      <span style="color: #466b9d">
+      <div class="user-name">
         {{ comment.aut_name }}
-      </span>
+      </div>
       <!-- 点赞图标 -->
       <van-button
         class="like-btn"
-        :class="{ liked: comment.is_liking }"
         :icon="comment.is_liking ? 'good-job' : 'good-job-o'"
+        @click="onlike()"
+        :loading="likeLoading"
       >
         {{ comment.like_count || '赞' }}
       </van-button>
@@ -36,7 +36,7 @@
         <span class="comment-pubdate">
           {{ comment.pubdate | timeFilter }}
         </span>
-        <van-button class="reply-btn" round>
+        <van-button class="reply-btn" round @click="$emit('onReply', comment)">
           回复 {{ comment.reply_count }}
         </van-button>
       </div>
@@ -45,13 +45,37 @@
 </template>
 
 <script>
+import { likeComment, canelLikeComment } from '@/api/comment.js'
+
 export default {
+  name: 'CommentItem',
   data() {
-    return {}
+    return {
+      likeLoading: false
+    }
   },
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    async onlike() {
+      this.likeLoading = true
+
+      try {
+        if (this.comment.is_liking) {
+          await canelLikeComment(this.comment.com_id)
+          this.comment.like_count--
+        } else {
+          await likeComment(this.comment.com_id)
+          this.comment.like_count++
+        }
+      } catch (error) {
+        this.$toast('网络错误，点赞失败')
+      }
+
+      this.likeLoading = false
+      this.comment.is_liking = !this.comment.is_liking
+    }
+  },
   props: {
     comment: {
       type: Object,

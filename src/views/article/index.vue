@@ -51,14 +51,26 @@
         <van-divider>正文结束</van-divider>
 
         <!-- 评论列表 -->
-        <comment-list :source="article_id" />
+        <comment-list
+          :source="article_id"
+          @onload-success="totalCount = $event"
+          :list="commentList"
+          @onReply="onReplyEvent"
+        />
 
         <!-- 底部区域 -->
         <div class="article-bottom">
           <!-- 发布评论 -->
-          <van-button class="comment-btn" type="default" round size="small"
-            >写评论</van-button
+          <van-button
+            class="comment-btn"
+            type="default"
+            round
+            size="small"
+            @click="show = true"
+            @closePop="closePop"
           >
+            写评论
+          </van-button>
 
           <!-- 评论总数 -->
           <van-icon name="comment-o" :badge="totalCount" color="#777" />
@@ -80,6 +92,11 @@
           <van-icon name="share" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
+
+        <!-- 弹出层 -->
+        <van-popup v-model="show" position="bottom">
+          <post-comment :artID="article_id" @closePop="closePop" />
+        </van-popup>
       </div>
       <!-- /加载完成-文章详情 -->
 
@@ -94,12 +111,23 @@
       <div class="error-wrap" v-else>
         <van-icon name="failure" />
         <p class="text">内容加载失败！</p>
-        <van-button class="retry-btn" @click="loadArticleById"
-          >点击重试</van-button
-        >
+        <van-button class="retry-btn" @click="loadArticleById">
+          点击重试
+        </van-button>
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
     </div>
+
+    <!-- 回复评论 弹出层 -->
+    <!-- popup 懒渲染 -->
+    <!-- 使用v-if动态渲染 -->
+    <van-popup v-model="replyShow" position="bottom" style="height: 100%">
+      <comment-reply
+        v-if="replyShow"
+        :currentComment="currentComment"
+        @closePop="replyShow = false"
+      />
+    </van-popup>
   </div>
 </template>
 
@@ -114,6 +142,8 @@ import FollowBtn from '@/components/follow-btn'
 import Colloction from './components/colloction.vue'
 import LikeArticle from './components/like-article.vue'
 import CommentList from './components/comment-list.vue'
+import PostComment from './components/post-comment.vue'
+import CommentReply from './components/comment-reply.vue'
 
 export default {
   name: 'ArticleIndex',
@@ -123,7 +153,11 @@ export default {
       article: {},
       isLoading: true, // 加载状态
       errorStatus: -1, // 错误状态码
-      totalCount: 0
+      totalCount: 0,
+      show: false,
+      commentList: [],
+      replyShow: false,
+      currentComment: {}
     }
   },
 
@@ -217,6 +251,22 @@ export default {
 
         this.$toast(msg)
       }
+    },
+
+    // 关闭弹出层
+    closePop(res) {
+      if (res) {
+        this.show = false
+        this.commentList.unshift(res.new_obj)
+      }
+    },
+
+    // 点击回复评论
+    onReplyEvent(ele) {
+      // 显示弹出层
+      this.replyShow = true
+      // 储存当前评论项
+      this.currentComment = ele
     }
   },
 
@@ -229,7 +279,9 @@ export default {
     FollowBtn,
     Colloction,
     LikeArticle,
-    CommentList
+    CommentList,
+    PostComment,
+    CommentReply
   }
 }
 </script>
