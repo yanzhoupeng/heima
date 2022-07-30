@@ -18,7 +18,9 @@
           <p>{{ userMsg.name }}</p>
         </div>
 
-        <div class="user-right">编辑资料</div>
+        <van-button style="padding: 0" class="user-right" to="/user/profile"
+          >编辑资料</van-button
+        >
       </div>
 
       <div class="info">

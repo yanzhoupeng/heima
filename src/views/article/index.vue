@@ -148,6 +148,10 @@ import CommentReply from './components/comment-reply.vue'
 export default {
   name: 'ArticleIndex',
 
+  provide: function () {
+    return { articleID: this.article_id }
+  },
+
   data() {
     return {
       article: {},
@@ -287,6 +291,19 @@ export default {
 </script>
 
 <style scoped lang="less">
+// 导航栏公共样式设置
+/deep/.van-nav-bar__content {
+  height: 90px;
+  background-color: #3296fa;
+  .van-nav-bar__title {
+    color: #fff;
+    font-size: 32px;
+  }
+  .heimaweb {
+    color: #fff;
+    font-size: 20px !important;
+  }
+}
 .article-container {
   .page-nav-bar {
     .van-icon {

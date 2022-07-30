@@ -61,6 +61,13 @@ const routes = [
     component: () => import('@/views/article/index'),
     // 解耦url参数
     props: true
+  },
+
+  //
+  {
+    path: '/user/profile',
+    name: 'UserProfile',
+    component: () => import('@/views/user-profile/index.vue')
   }
 ]
 

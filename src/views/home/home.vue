@@ -253,4 +253,18 @@ export default {
 /deep/ .van-popup__close-icon--top-right {
   top: 0.32rem;
 }
+
+// 导航栏公共样式设置
+/deep/.van-nav-bar__content {
+  height: 90px;
+  background-color: #3296fa;
+  .van-nav-bar__title {
+    color: #fff;
+    font-size: 32px;
+  }
+  .heimaweb {
+    color: #fff;
+    font-size: 20px !important;
+  }
+}
 </style>

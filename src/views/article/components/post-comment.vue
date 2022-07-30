@@ -30,6 +30,7 @@ export default {
   data() {
     return { message: '' }
   },
+  inject: { articleID: { type: [Number, String], default: null } },
   props: { artID: { type: [Number, String], required: true } },
   created() {},
   mounted() {},
@@ -46,7 +47,7 @@ export default {
         } = await await addComment({
           target: this.artID,
           content: this.message,
-          art_id: null
+          art_id: this.articleID
         })
         this.message = ''
         this.$emit('closePop', data)
