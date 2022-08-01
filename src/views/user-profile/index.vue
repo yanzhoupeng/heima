@@ -9,10 +9,12 @@
     />
 
     <!-- 单元格 -->
-    <van-cell title="头像" is-link>
+    <!-- 头像 cellitem -->
+    <van-cell title="头像" is-link @click="$refs.file.click()">
       <van-image class="avatar" fit="cover" round :src="userInfo.photo" />
     </van-cell>
 
+    <!-- 昵称 cellitem  -->
     <van-cell
       title="昵称"
       :value="userInfo.name"
@@ -20,6 +22,7 @@
       @click="isNamePopShow = true"
     />
 
+    <!-- 性别 cellitem -->
     <van-cell
       title="性别"
       :value="userInfo.gender === 0 ? '男' : '女'"
@@ -27,6 +30,7 @@
       @click="isGenderShow = true"
     />
 
+    <!-- 生日 cellitem -->
     <van-cell
       @click="isBirthdayShow = true"
       title="生日"
@@ -67,30 +71,51 @@
         @changeUserGender="updateUserInfo"
       />
     </van-popup>
+
+    <!-- avater 表单 -->
+    <input type="file" hidden ref="file" @change="onFileChange" />
+
+    <!-- avater 弹出层 -->
+    <van-popup
+      v-model="isPhotoShow"
+      position="bottom"
+      :style="{ height: '100%' }"
+    >
+      <pop-update-photo
+        :img="img"
+        @closePop="isPhotoShow = false"
+        v-if="isPhotoShow"
+        @update-photo="userInfo.photo = $event"
+      />
+    </van-popup>
   </div>
 </template>
 
 <script>
+// 引入接口
 import { getUserMessage, changeUserMessage } from '@/api/user-profile.js'
+// 引入组件
 import popName from './components/pop-name.vue'
 import PopGender from './components/pop-gender.vue'
 import PopBirthday from './components/pop-birthday.vue'
+import PopUpdatePhoto from './components/pop-updatePhoto.vue'
 
 export default {
-  components: { popName, PopGender, PopBirthday },
+  components: { popName, PopGender, PopBirthday, PopUpdatePhoto },
   name: 'UserProfile',
   data() {
     return {
       userInfo: {},
       isNamePopShow: false,
       isGenderShow: false,
-      isBirthdayShow: false
+      isBirthdayShow: false,
+      isPhotoShow: false,
+      img: null
     }
   },
   created() {
     this.loadUserInfo()
   },
-  mounted() {},
   methods: {
     // 导航栏左侧图标事件
     onClickLeft() {
@@ -134,6 +159,20 @@ export default {
       } catch (error) {
         this.$toast.fail('网络错误')
       }
+    },
+
+    // 文件上传事件
+    onFileChange() {
+      // 从input元素中获取图片数据
+      const data = this.$refs.file.files[0]
+      // 将图片数据转换为BLOB格式
+      const img = window.URL.createObjectURL(data)
+      // 赋值
+      this.img = img
+      // 显示弹出层
+      this.isPhotoShow = true
+      // 清空value 重复选择同一图片
+      this.$refs.file.value = ''
     }
   }
 }

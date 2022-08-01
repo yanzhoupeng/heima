@@ -19,3 +19,10 @@ export const changeUserMessage = (data) =>
     url: 'v1_0/user/profile',
     data
   })
+
+export const updateUserAvater = (data) =>
+  request({
+    method: 'PATCH',
+    url: 'v1_0/user/photo',
+    data
+  })
