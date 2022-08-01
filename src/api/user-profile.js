@@ -4,6 +4,8 @@
  *  getUserMessage 获得用户信息
  *
  *  changeUserMessage 更新用户信息
+ *
+ *  updateUserAvater 更新用户头像
  */
 
 import request from '@/utils/request'
